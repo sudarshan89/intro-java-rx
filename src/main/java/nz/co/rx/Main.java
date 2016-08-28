@@ -1,14 +1,26 @@
 package nz.co.rx;
 
-import rx.subjects.PublishSubject;
+import rx.Observable;
+import rx.schedulers.Schedulers;
 
 public class Main {
-    public static void main(String[] args) {
-        PublishSubject<Integer> subject = PublishSubject.create();
-        subject.onNext(1);
-        subject.subscribe(System.out::println);
-        subject.onNext(2);
-        subject.onNext(3);
-        subject.onNext(4);
+    public static void main(String[] args) throws InterruptedException {
+        Observable.from(new String[]{"Hello", "Sid", "Mid"})
+                .observeOn(Schedulers.io())
+                .map(input -> input)
+                .subscribe(onNext -> {
+                            callMethod(onNext);
+                        }
+                ,error-> System.out.println(error));
+        Thread.sleep(2000);
+    }
+
+    private static void callMethod(String onNext) {
+        if(onNext.equals("Hello")){
+            //throw new NullPointerException();
+        }
+        else {
+            System.out.println(onNext);
+        }
     }
 }
